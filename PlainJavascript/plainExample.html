@@ -1,0 +1,175 @@
+<html>
+
+<head>
+    <script src="https://unpkg.com/@microsoft/mgt/dist/bundle/mgt-loader.js"></script>
+    <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
+    <script src="https://kit.fontawesome.com/d88fa67d0a.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <script>
+        const loadAgenda = () => {
+            document.getElementById("agenda").innerHTML = "<mgt-agenda></mgt-agenda>";
+        };
+
+
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+
+    </script>
+
+    <style>
+        fast-tab-panel {
+            padding-top: 2em;
+            color: black;
+        }
+
+
+
+
+
+        .fileContainer {
+            display: grid;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            grid-auto-rows: minmax(2em, auto);
+            border-bottom: 1px solid black;
+            padding-top: 0.2em;
+            padding-bottom: 0.2em;
+
+        }
+
+        .wrapper a {
+            color: black;
+            text-decoration: none;
+
+        }
+
+        .one {
+            grid-column: 1 / 2;
+        }
+
+        .two {
+            grid-column: 2 / 2;
+        }
+    </style>
+
+    <mgt-msal2-provider client-id="5b7415c3-bdf8-48bd-94ad-19ef8debf02a" login-type="redirect/popup"
+        scopes="user.read,people.read" redirect-uri="http://localhost:5500/PlainJavascript/MyCategorizedMail.html">
+    </mgt-msal2-provider>
+
+    <div style="width: auto;">
+        <h1 style="display: inline-block; width: 70%;">Plain javascript</h1>
+        <span style="display: inline-block;align-content: flex-end;">
+            <mgt-login></mgt-login>
+        </span>
+    </div>
+
+
+    <fast-tabs>
+        <fast-tab slot="tab">Agenda</fast-tab>
+        <fast-tab slot="tab">Todo</fast-tab>
+        <fast-tab slot="tab">My mail</fast-tab>
+        <fast-tab slot="tab">Sharepoint</fast-tab>
+        <fast-tab-panel slot="tabpanel" id="agenda">Tab panel 1</fast-tab-panel>
+        <fast-tab-panel slot="tabpanel">
+            <mgt-todo></mgt-todo>
+        </fast-tab-panel>
+        <fast-tab-panel slot="tabpanel">
+            <mgt-get resource="/me/messages" version="beta" scopes="mail.read" max-pages="2">
+                <template>
+                    <div style="padding-bottom: 2em;" data-for="email in value">
+                        <div>
+                            <span style="display: inline-block; width: 350px;vertical-align: text-bottom;">
+                                <mgt-person person-query="{{email.sender.emailAddress.address}}" view="oneline"
+                                    person-card="hover"></mgt-person>
+                            </span>
+                            <h3 style="display: inline-block;align-content: flex-end;">{{ email.subject }}</h3>
+                        </div>
+
+                        <div data-if="email.bodyPreview" style="font-size: small;" innerHtml>{{email.bodyPreview}}</div>
+                        <div data-else class="preview">
+                            email body is empty
+                        </div>
+                    </div>
+                    <pre>
+                        {{ JSON.stringify(this, null, 2) }}
+                    </pre>
+
+                </template>
+                <template data-type="loading">
+                    loading
+                </template>
+                <template data-type="error">
+                    {{ this }}
+                </template>
+            </mgt-get>
+        </fast-tab-panel>
+        <fast-tab-panel slot="tabpanel">
+
+            <mgt-get
+                resource="/sites/giunecosrl.sharepoint.com,e7f5da71-7f68-4413-ae80-3eee876a0781,61cbb0d6-773f-4d8d-8622-bec29c89f24e/lists/9a7f596e-1446-4779-8a9e-e2c4076fdd9d/items?expand=fields"
+                scopes="sites.read.all" max-pages="4" polling-rate="0">
+                <template>
+                    <div class="wrapper" data-for="row in value">
+                        <div class="one">
+                            <mgt-person person-query="{{row.createdBy.user.email}}" view="oneline" person-card="hover">
+                            </mgt-person>
+                        </div>
+                        <div class="two">
+                            <a href="{{ row.webUrl }}"> <i class="fas fa-link"></i> {{ row.fields.LinkFilename }}
+
+                            </a>
+                        </div>
+                    </div>
+                    <pre>
+                        {{ JSON.stringify(this, null, 2) }}
+                    </pre>
+                </template>
+                <template data-type="loading"> loading </template>
+                <template data-type="error"> {{ this.message }} </template>
+            </mgt-get>
+
+        </fast-tab-panel>
+    </fast-tabs>
+
+
+
+
+
+    <script>
+        const signedIn = () => {
+            if (mgt.Providers.globalProvider.state === mgt.ProviderState.SignedIn) {
+                loadAgenda();
+            }
+        };
+        mgt.Providers.onProviderUpdated(signedIn);
+    </script>
+</body>
+
+</html>
