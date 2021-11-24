@@ -4,7 +4,7 @@
     <script src="https://unpkg.com/@microsoft/mgt/dist/bundle/mgt-loader.js"></script>
     <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
     <script src="https://kit.fontawesome.com/d88fa67d0a.js" crossorigin="anonymous"></script>
-
+        <title>Graph Toolkit - javascript</title>
 </head>
 
 <body>
@@ -48,25 +48,61 @@
         .two {
             grid-column: 2 / 2;
         }
+        /*ele style*/
+        :root{
+            --accent-foreground-rest: #FFFFFF;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI","Segoe UI Web (West European)","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+        }
+        .testata{
+            padding: 20px 20px 20px 20px !important;
+            margin: 0 0 10px 0;
+            display: flex;
+            justify-content: space-between;
+            background-color: #fafafa;
+            -webkit-box-shadow: 0px 5px 15px -8px rgba(0,0,0,0.30);
+            box-shadow: 0px 5px 15px -8px rgba(0,0,0,0.30);
+        }
+        h1.top_title{
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            font-weight: normal;
+        }
+        mgt-todo{
+            margin: 0 20px;
+        }
+        mgt-get>div{
+            padding: 0 20px !important;
+        }
+        mgt-get div{
+            border-bottom: 1px solid #f3f3f3;
+            line-height: 130%;
+        }
+
     </style>
 
     <mgt-msal2-provider client-id="5b7415c3-bdf8-48bd-94ad-19ef8debf02a" login-type="redirect/popup"
         scopes="user.read,people.read" redirect-uri="http://localhost:5500/PlainJavascript/plainExample.html">
     </mgt-msal2-provider>
 
-    <div style="width: auto;">
-        <h1 style="display: inline-block; width: 70%;">Plain javascript</h1>
-        <span style="display: inline-block;align-content: flex-end;">
+    <div class="testata">
+        <h1 class="top_title">Graph Toolkit: Plain javascript</h1>
+        <span>
             <mgt-login></mgt-login>
         </span>
     </div>
 
 
     <fast-tabs>
-        <fast-tab slot="tab">Agenda</fast-tab>
-        <fast-tab slot="tab">Todo</fast-tab>
-        <fast-tab slot="tab">My mail</fast-tab>
-        <fast-tab slot="tab">Sharepoint</fast-tab>
+        <fast-tab slot="tab" style="color: #FEA8B6;">Agenda</fast-tab>
+        <fast-tab slot="tab" style="color: #FEA8B6;">Todo</fast-tab>
+        <fast-tab slot="tab" style="color: #FEA8B6;">My mail</fast-tab>
+        <fast-tab slot="tab" style="color: #FEA8B6;">Sharepoint</fast-tab>
+        <hr>
         <fast-tab-panel slot="tabpanel" id="agenda">Please log in</fast-tab-panel>
         <fast-tab-panel slot="tabpanel">
             <mgt-todo></mgt-todo>

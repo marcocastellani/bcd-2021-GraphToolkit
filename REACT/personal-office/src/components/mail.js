@@ -5,14 +5,14 @@ const Riga = (props) => {
 
   return (
     <>
-      <div>
+      <div class="intestazione">
         <span>
           <Person personQuery={email.sender.emailAddress.address} view="oneline" personCard="hover"></Person>
         </span>
         <h3>{email.subject}</h3>
       </div>
 
-      <div>{email.bodyPreview}</div>
+      <div class="anteprima">{email.bodyPreview}</div>
 
       {/* <pre>{JSON.stringify(email, null, 2)}</pre> */}
     </>
