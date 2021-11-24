@@ -7,9 +7,12 @@ function App() {
   return (
     <BrowserRouter>
       <div>
-        <People />
-        <Login />
 
+        <div class="testata">
+          <h1 class="top_title">Graph Toolkit: React</h1>
+          <People />
+          <Login />
+        </div>
         <nav>
           <ul>
             <li>
@@ -26,11 +29,22 @@ function App() {
             </li>
           </ul>
         </nav>
+
         <Routes>
           <Route path="/" element={<Agenda />} />
-          <Route path="/todo" element={<Todo />} />
-          <Route path="/mail" element={<Mail />} />
-          <Route path="/sharepoint" element={<Sharepoint />} />
+          <Route path="/todo" element={
+          <div class="container">
+            <Todo />
+          </div>
+          } />
+          <Route path="/mail" element={
+          <div class="container">
+            <Mail />
+          </div>} />
+          <Route path="/sharepoint" element={
+          <div class="container">
+            <Sharepoint />
+          </div>} />
         </Routes>
       </div>
     </BrowserRouter>

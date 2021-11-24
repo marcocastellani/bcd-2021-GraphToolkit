@@ -5,19 +5,17 @@ const Riga = (props) => {
 
   return (
     <>
-      <div>
+    <div class="minicontenitore">
+        <a href={row.webUrl} target="_blank" rel="noreferrer" class="title_item">
+          <i class="fas fa-link"></i> {row.fields.LinkFilename}
+        </a>
+      <div class="detail_item">
         <span>
           <Person personQuery={row.createdBy.user.email} view="oneline" personCard="hover"></Person>
         </span>
-        <h3>{row.webUrl}</h3>
+        <span>{row.webUrl}</span>
       </div>
-
-      <div>
-        <a href={row.webUrl} target="_blank" rel="noreferrer">
-          <i class="fas fa-link"></i> {row.fields.LinkFilename}
-        </a>
       </div>
-
       {/* <pre>{JSON.stringify(email, null, 2)}</pre> */}
     </>
   );
